@@ -1,0 +1,20 @@
+{
+  "round_index": 1,
+  "history_ids": [],
+  "model_call_ids": [
+    "round-1-call"
+  ],
+  "hypothesis": "保守学习率续训可在不破坏父模型的前提下降低公开验证 RMSE。",
+  "epochs": 20,
+  "learning_rate": 3e-05,
+  "validation_before": {
+    "mae": 563.1058414514887,
+    "rmse": 681.1598326043113
+  },
+  "validation_after": {
+    "mae": 546.296364541096,
+    "rmse": 657.8815809319289
+  },
+  "improved": true,
+  "decision": "select_candidate"
+}

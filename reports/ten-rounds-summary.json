@@ -1,0 +1,112 @@
+[
+  {
+    "round_index": 1,
+    "epochs": 20,
+    "learning_rate": 3e-05,
+    "rmse_before": 681.1598326043113,
+    "rmse_after": 657.8815809319289,
+    "mae_after": 546.296364541096,
+    "decision": "select_candidate",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  },
+  {
+    "round_index": 2,
+    "epochs": 10,
+    "learning_rate": 1e-05,
+    "rmse_before": 657.8815809319289,
+    "rmse_after": 658.7247508848288,
+    "mae_after": 547.0636837926507,
+    "decision": "keep_parent",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  },
+  {
+    "round_index": 3,
+    "epochs": 10,
+    "learning_rate": 3e-05,
+    "rmse_before": 657.8815809319289,
+    "rmse_after": 658.9541645639446,
+    "mae_after": 547.3976202613728,
+    "decision": "keep_parent",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  },
+  {
+    "round_index": 4,
+    "epochs": 20,
+    "learning_rate": 1e-05,
+    "rmse_before": 657.8815809319289,
+    "rmse_after": 658.8310682174724,
+    "mae_after": 547.3177317562148,
+    "decision": "keep_parent",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  },
+  {
+    "round_index": 5,
+    "epochs": 5,
+    "learning_rate": 1e-05,
+    "rmse_before": 657.8815809319289,
+    "rmse_after": 658.3752291475246,
+    "mae_after": 546.752824946727,
+    "decision": "keep_parent",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  },
+  {
+    "round_index": 6,
+    "epochs": 10,
+    "learning_rate": 3e-05,
+    "rmse_before": 657.8815809319289,
+    "rmse_after": 658.9541645639446,
+    "mae_after": 547.3976202613728,
+    "decision": "keep_parent",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  },
+  {
+    "round_index": 7,
+    "epochs": 5,
+    "learning_rate": 5e-05,
+    "rmse_before": 657.8815809319289,
+    "rmse_after": 658.6536668314565,
+    "mae_after": 547.1982227580608,
+    "decision": "keep_parent",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  },
+  {
+    "round_index": 8,
+    "epochs": 20,
+    "learning_rate": 1e-05,
+    "rmse_before": 657.8815809319289,
+    "rmse_after": 658.8310682174724,
+    "mae_after": 547.3177317562148,
+    "decision": "keep_parent",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  },
+  {
+    "round_index": 9,
+    "epochs": 5,
+    "learning_rate": 3e-05,
+    "rmse_before": 657.8815809319289,
+    "rmse_after": 658.6085924290493,
+    "mae_after": 547.0482679657996,
+    "decision": "keep_parent",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  },
+  {
+    "round_index": 10,
+    "epochs": 10,
+    "learning_rate": 1e-05,
+    "rmse_before": 657.8815809319289,
+    "rmse_after": 658.7247508848288,
+    "mae_after": 547.0636837926507,
+    "decision": "keep_parent",
+    "selected_artifact_id": "round-1-candidate",
+    "selected_checkpoint": "C:\\Users\\wlx20\\Documents\\Codex\\2026-11-18\\files-mentioned-by-the-user-contest\\work\\harness-training\\B\\ten-rounds\\workspace\\round-1\\candidate\\checkpoint.npz"
+  }
+]
