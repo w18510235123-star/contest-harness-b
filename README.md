@@ -1,24 +1,34 @@
-# Contest Harness B: Bearing RUL
+# Contest Harness A/B/C
 
-Profile B submission for `contest.harness.workspace.v2`. The industrial model
-predicts remaining useful life in minutes from 34 horizontal/vertical bearing
-features.
+Submission for `contest.harness.workspace.v2`. The same adapter detects the
+selected dataset and task:
 
-## Model
+- A: six-class gas classification
+- B: bearing RUL regression in minutes
+- C: turbofan RUL regression in cycles
 
-- CPU NumPy MLP: 34 inputs, 24 tanh hidden units, 1 linear output
-- 865 parameters
-- Adam continuation from the platform parent checkpoint
-- Public validation RMSE: 657.881581 minutes
-- Public validation MAE: 546.296365 minutes
+## Models
 
-The supplied baseline had RMSE 681.159833 and MAE 563.105841.
+- A: 128 inputs, 32 tanh hidden units, 6-class softmax
+- B: 34 inputs, 24 tanh hidden units, 1 linear output
+- C: 24 inputs, 32 tanh hidden units, 1 linear output
+- All models use CPU NumPy and Adam continuation from the platform parent
+  checkpoint.
+
+Local public-validation results:
+
+| Dataset | Metric | Baseline | Best local |
+|---|---|---:|---:|
+| A | Macro-F1 | 0.714030 | 0.725782 |
+| B | RMSE | 681.159833 | 657.881581 |
+| C | RMSE | 52.868573 | 52.225263 |
 
 ## Harness policy
 
-`contest_submission.py` reads `rnd.history()`, runs the scheduled experiment,
-compares public validation RMSE before and after training, and selects the new
-candidate only when it improves. Otherwise it keeps the parent artifact.
+`contest_submission.py` reads `rnd.history()`, selects profile A/B/C from
+`rnd.dataset_key`, runs the scheduled experiment, compares the task metric
+before and after training, and selects the new candidate only when it improves.
+Otherwise it keeps the parent artifact.
 
 Every round records its history IDs, model call ID, metrics, and decision in
 `experiment.json`.
@@ -30,6 +40,8 @@ harness.py
 contest_submission.py
 baselines/
 model/checkpoint.npz
+model/checkpoint_A.npz
+model/checkpoint_C.npz
 reports/
 sdk/
 Dockerfile
@@ -53,9 +65,9 @@ checkpoint, prediction, and schema tests pass.
 ## Build the image
 
 ```sh
-docker build --platform linux/amd64 -t contest-harness-b:1.0.4-20261119 .
-docker save -o contest-harness-b-linux-amd64.tar \
-  contest-harness-b:1.0.4-20261119
+docker build --platform linux/amd64 -t contest-harness-multitask:1.0.4-20261119 .
+docker save -o contest-harness-multitask-linux-amd64.tar \
+  contest-harness-multitask:1.0.4-20261119
 ```
 
 The image entrypoint is:

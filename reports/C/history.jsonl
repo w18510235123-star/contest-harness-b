@@ -1,0 +1,15 @@
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 16, "step": 7072, "loss": 0.4352748826298047, "validation": {"mae": 38.81204206321212, "rmse": 52.35017758208335}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 17, "step": 7514, "loss": 0.43252866715580374, "validation": {"mae": 38.993129895296235, "rmse": 52.740935760756635}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 18, "step": 7956, "loss": 0.43283806897543353, "validation": {"mae": 38.32469791843494, "rmse": 53.243526439169955}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 19, "step": 8398, "loss": 0.43135213888434765, "validation": {"mae": 37.981326026057936, "rmse": 51.933885489408866}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 20, "step": 8840, "loss": 0.43220459638036357, "validation": {"mae": 38.322199470282044, "rmse": 52.367734885728304}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 21, "step": 9282, "loss": 0.4306012369629302, "validation": {"mae": 38.57404362189628, "rmse": 52.81303231025304}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 22, "step": 9724, "loss": 0.43063460520596325, "validation": {"mae": 38.06030810634572, "rmse": 51.777100870618625}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 23, "step": 10166, "loss": 0.4310173020108582, "validation": {"mae": 37.83364334510415, "rmse": 51.78418312009118}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 24, "step": 10608, "loss": 0.42969129793526395, "validation": {"mae": 37.60457992726352, "rmse": 51.508653608405794}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 25, "step": 11050, "loss": 0.4281108183378992, "validation": {"mae": 38.04396395939426, "rmse": 52.3601595765267}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 26, "step": 11492, "loss": 0.42852609840057015, "validation": {"mae": 37.60595625522662, "rmse": 51.86211915652589}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 27, "step": 11934, "loss": 0.4292484698968043, "validation": {"mae": 38.14144022368507, "rmse": 51.66612405523723}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 28, "step": 12376, "loss": 0.42640217522124946, "validation": {"mae": 37.52594828330533, "rmse": 51.51462469002341}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 29, "step": 12818, "loss": 0.42572431801244465, "validation": {"mae": 37.87181723777125, "rmse": 51.761766812108}}
+{"stage_id": "unified-round-1", "seed": 42, "epoch": 30, "step": 13260, "loss": 0.4272677222634181, "validation": {"mae": 37.826414545687626, "rmse": 52.225262557343456}}

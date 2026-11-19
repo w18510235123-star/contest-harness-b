@@ -1,6 +1,36 @@
-# 10-round experiment record
+# Experiment record
 
-All experiments use the public B split:
+The adapter supports all three public datasets:
+
+| Dataset | Task | Metric |
+|---|---|---|
+| A | classification | Macro-F1, higher is better |
+| B | regression | RMSE in minutes, lower is better |
+| C | regression | RMSE in cycles, lower is better |
+
+## A: gas classification
+
+| Metric | Parent | Local candidate |
+|---|---:|---:|
+| Macro-F1 | 0.714030 | **0.725782** |
+| Accuracy | 0.878617 | **0.885048** |
+
+The selected A candidate used 5 epochs at learning rate `0.003`.
+A follow-up 10-epoch experiment at `0.001` improved Macro-F1 to `0.726366`.
+
+## C: turbofan RUL
+
+| Metric | Parent | Local candidate |
+|---|---:|---:|
+| RMSE (cycles) | 52.868573 | **52.225263** |
+| MAE (cycles) | 38.899830 | **37.826415** |
+
+The C candidate used 15 epochs at learning rate `0.002` on 113,089 training
+rows and 23,049 validation rows.
+
+## B: bearing RUL
+
+All B experiments use the public split:
 
 - Training rows: 7,032
 - Validation rows: 1,679
