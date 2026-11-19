@@ -8,6 +8,19 @@ The adapter supports all three public datasets:
 | B | regression | RMSE in minutes, lower is better |
 | C | regression | RMSE in cycles, lower is better |
 
+## Robust acceptance policy
+
+v3 accepted small public-validation improvements that did not generalize to
+hidden stages, especially for B and C. The revised policy requires:
+
+- A: Macro-F1 at least +0.01 and accuracy not lower;
+- B: RMSE at least 5% lower and MAE not higher;
+- C: RMSE at least 2% lower and MAE not higher.
+
+When the threshold is not met, the platform parent checkpoint is retained.
+This guarantees that weak or noisy candidates cannot reduce the submitted
+artifact below the parent baseline.
+
 ## A: gas classification
 
 | Metric | Parent | Local candidate |

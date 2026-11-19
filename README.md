@@ -26,9 +26,17 @@ Local public-validation results:
 ## Harness policy
 
 `contest_submission.py` reads `rnd.history()`, selects profile A/B/C from
-`rnd.dataset_key`, runs the scheduled experiment, compares the task metric
-before and after training, and selects the new candidate only when it improves.
-Otherwise it keeps the parent artifact.
+`rnd.dataset_key`, runs the scheduled experiment, and applies a robust
+acceptance policy:
+
+| Dataset | Acceptance rule |
+|---|---|
+| A | Macro-F1 +0.01 absolute and accuracy not lower |
+| B | RMSE at least 5% lower and MAE not higher |
+| C | RMSE at least 2% lower and MAE not higher |
+
+Otherwise it keeps the parent artifact. This avoids accepting small public
+validation gains that did not generalize to the hidden stages in v3.
 
 Every round records its history IDs, model call ID, metrics, and decision in
 `experiment.json`.
@@ -66,7 +74,7 @@ checkpoint, prediction, and schema tests pass.
 
 ```sh
 docker build --platform linux/amd64 -t contest-harness-multitask:1.0.4-20261119 .
-docker save -o contest-harness-multitask-linux-amd64.tar \
+docker save -o contest-harness-multitask-v4-linux-amd64.tar \
   contest-harness-multitask:1.0.4-20261119
 ```
 

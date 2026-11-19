@@ -20,6 +20,12 @@ PROFILE_TASKS = {
     "C": "regression",
 }
 
+ACCEPTANCE = {
+    "A": {"type": "absolute", "threshold": 0.01, "guard": "accuracy"},
+    "B": {"type": "relative", "threshold": 0.05, "guard": "mae"},
+    "C": {"type": "relative", "threshold": 0.02, "guard": "mae"},
+}
+
 # Conservative ten-round schedules. A candidate is selected only when the
 # current public validation metric improves over the parent checkpoint.
 EXPERIMENTS = {
@@ -114,20 +120,40 @@ def _profile_for_round(rnd) -> tuple[str, str]:
     return dataset_key, expected_task
 
 
-def _metric_result(
-    task: str, before: dict, after: dict
-) -> tuple[str, str, float, float, bool]:
+def _metric_result(profile: str, task: str, before: dict, after: dict) -> dict:
+    policy = ACCEPTANCE[profile]
     if task == "classification":
         name, direction = "macro_f1", "higher"
         before_value = float(before["macro_f1"])
         after_value = float(after["macro_f1"])
-        improved = after_value > before_value
+        change = after_value - before_value
+        guard_before = float(before["accuracy"])
+        guard_after = float(after["accuracy"])
+        guard_passed = guard_after >= guard_before
+        improved = change >= float(policy["threshold"]) and guard_passed
     else:
         name, direction = "rmse", "lower"
         before_value = float(before["rmse"])
         after_value = float(after["rmse"])
-        improved = after_value < before_value
-    return name, direction, before_value, after_value, improved
+        change = (before_value - after_value) / max(abs(before_value), 1e-12)
+        guard_before = float(before["mae"])
+        guard_after = float(after["mae"])
+        guard_passed = guard_after <= guard_before
+        improved = change >= float(policy["threshold"]) and guard_passed
+    return {
+        "metric": name,
+        "direction": direction,
+        "before": before_value,
+        "after": after_value,
+        "change": change,
+        "threshold_type": policy["type"],
+        "threshold": float(policy["threshold"]),
+        "guard_metric": policy["guard"],
+        "guard_before": guard_before,
+        "guard_after": guard_after,
+        "guard_passed": guard_passed,
+        "improved": improved,
+    }
 
 
 def train(rnd) -> None:
@@ -177,7 +203,8 @@ def train(rnd) -> None:
         stage_id=f"round-{rnd.round_index}",
     )
     code_paths = _copy_submission_code(candidate)
-    metric, direction, before_value, after_value, improved = _metric_result(
+    decision = _metric_result(
+        profile,
         task,
         report["validation_before"],
         report["validation_after"],
@@ -196,14 +223,20 @@ def train(rnd) -> None:
         "hypothesis": hypothesis,
         "epochs": epochs,
         "learning_rate": learning_rate,
-        "metric": metric,
-        "metric_direction": direction,
-        "metric_before": before_value,
-        "metric_after": after_value,
+        "metric": decision["metric"],
+        "metric_direction": decision["direction"],
+        "metric_before": decision["before"],
+        "metric_after": decision["after"],
+        "metric_change": decision["change"],
+        "acceptance_policy": ACCEPTANCE[profile],
+        "guard_metric": decision["guard_metric"],
+        "guard_before": decision["guard_before"],
+        "guard_after": decision["guard_after"],
+        "guard_passed": decision["guard_passed"],
         "validation_before": report["validation_before"],
         "validation_after": report["validation_after"],
-        "improved": improved,
-        "decision": "select_candidate" if improved else "keep_parent",
+        "improved": decision["improved"],
+        "decision": "select_candidate" if decision["improved"] else "keep_parent",
     }
     (candidate / "experiment.json").write_text(
         json.dumps(experiment, ensure_ascii=False, allow_nan=False, indent=2) + "\n",
@@ -218,10 +251,16 @@ def train(rnd) -> None:
         "batch_size": report["batch_size"],
         "train_rows": train_rows,
         "validation_rows": validation_rows,
-        "metric": metric,
-        "metric_direction": direction,
-        "metric_before": before_value,
-        "metric_after": after_value,
+        "metric": decision["metric"],
+        "metric_direction": decision["direction"],
+        "metric_before": decision["before"],
+        "metric_after": decision["after"],
+        "metric_change": decision["change"],
+        "acceptance_policy": ACCEPTANCE[profile],
+        "guard_metric": decision["guard_metric"],
+        "guard_before": decision["guard_before"],
+        "guard_after": decision["guard_after"],
+        "guard_passed": decision["guard_passed"],
         "decision": experiment["decision"],
     }
 
@@ -230,7 +269,7 @@ def train(rnd) -> None:
         hypothesis=hypothesis,
         change_summary=(
             f"第 {rnd.round_index} 轮从父 checkpoint 续训 {epochs} epoch，"
-            f"学习率 {learning_rate}，并比较公开验证 {metric}。"
+            f"学习率 {learning_rate}，并比较公开验证 {decision['metric']}。"
         ),
         configuration=configuration,
         seed=SEED,
@@ -238,7 +277,9 @@ def train(rnd) -> None:
         code_paths=code_paths,
         predict_argv=PREDICT_ARGV,
     )
-    selected_artifact_id = submitted["artifact_id"] if improved else rnd.parent.artifact_id
+    selected_artifact_id = (
+        submitted["artifact_id"] if decision["improved"] else rnd.parent.artifact_id
+    )
     rnd.finish(
         selected_artifact_id=selected_artifact_id,
         hypothesis=hypothesis,
@@ -247,12 +288,16 @@ def train(rnd) -> None:
             f"{learning_rate} 的 {profile} 数据集续训实验。"
         ),
         reason=(
-            f"公开验证 {metric} 训练前={before_value:.6f}、"
-            f"训练后={after_value:.6f}；"
+            f"公开验证 {decision['metric']} 训练前={decision['before']:.6f}、"
+            f"训练后={decision['after']:.6f}；"
+            f"门槛类型={decision['threshold_type']}，"
+            f"门槛={decision['threshold']:.6f}，"
+            f"辅助 {decision['guard_metric']} "
+            f"{decision['guard_before']:.6f}→{decision['guard_after']:.6f}；"
             + (
-                "结果改善，选择本轮候选 checkpoint。"
-                if improved
-                else "结果未改善，保留父 checkpoint，候选仅作为历史实验记录。"
+                "达到门槛且辅助指标未退化，选择本轮候选 checkpoint。"
+                if decision["improved"]
+                else "未达到稳健接受门槛，保留父 checkpoint，候选仅作为历史实验记录。"
             )
         ),
         configuration=configuration,
